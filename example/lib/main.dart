@@ -26,6 +26,8 @@ class _MyAppState extends State<MyApp> {
 
     sensor = new ScreenSensor(config);
 
+    sensor.start();
+
   }
 
   @override

@@ -31,12 +31,15 @@ public class SwiftAwareframeworkScreenPlugin: AwareFlutterPluginCore, FlutterPlu
     }
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        // add own channel
-        super.setChannels(with: registrar,
-                          instance: SwiftAwareframeworkScreenPlugin(),
-                          methodChannelName: "awareframework_screen/method",
-                          eventChannelName: "awareframework_screen/event")
-
+        let instance = SwiftAwareframeworkScreenPlugin()
+        super.setMethodChannel(with: registrar, instance: instance, channelName: "awareframework_screen/method")
+        super.setEventChannels(with: registrar,
+                               instance: instance,
+                               channelNames: ["awareframework_screen/event",
+                                            "awareframework_screen/event_on_screen_on",
+                                            "awareframework_screen/event_on_screen_off",
+                                            "awareframework_screen/event_on_screen_lock",
+                                            "awareframework_screen/event_on_screen_unlock"])
     }
 
     public func onScreenOn() {
