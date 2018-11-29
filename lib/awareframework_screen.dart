@@ -13,30 +13,37 @@ class ScreenSensor extends AwareSensorCore {
   static const EventChannel  _screenOnStream  = const EventChannel('awareframework_screen/event_on_screen_on');
   static const EventChannel  _screenOffStream  = const EventChannel('awareframework_screen/event_on_screen_off');
   static const EventChannel  _screenLockStream  = const EventChannel('awareframework_screen/event_on_screen_lock');
-  static const EventChannel  _screenUncloknStream  = const EventChannel('awareframework_screen/event_on_screen_unlock');
+  static const EventChannel  _screenUnlockStream  = const EventChannel('awareframework_screen/event_on_screen_unlock');
 
 
   /// Init Screen Sensor with ScreenSensorConfig
   ScreenSensor(ScreenSensorConfig config):this.convenience(config);
   ScreenSensor.convenience(config) : super(config){
-    /// Set sensor method & event channels
     super.setMethodChannel(_screenMethod);
   }
 
-  Stream<dynamic> onScreenOn(String id) {
-    return super.getBroadcastStream(_screenOnStream, "on_screen_on", id);
+  Stream<dynamic> get onScreenOn {
+    return super.getBroadcastStream(_screenOnStream, "on_screen_on");
   }
 
-  Stream<dynamic> onScreenOff(String id) {
-    return super.getBroadcastStream(_screenOffStream, "on_screen_off", id);
+  Stream<dynamic> get onScreenOff {
+    return super.getBroadcastStream(_screenOffStream, "on_screen_off");
   }
 
-  Stream<dynamic> onScreenLocked(String id) {
-    return super.getBroadcastStream(_screenLockStream, "on_screen_locked", id);
+  Stream<dynamic> get onScreenLocked {
+    return super.getBroadcastStream(_screenLockStream, "on_screen_locked");
   }
 
-  Stream<dynamic> onScreenUnlocked(String id){
-    return super.getBroadcastStream(_screenUncloknStream, "on_screen_unlocked", id);
+  Stream<dynamic> get onScreenUnlocked{
+    return super.getBroadcastStream(_screenUnlockStream, "on_screen_unlocked");
+  }
+
+  @override
+  void cancelAllEventChannels() {
+    super.cancelBroadcastStream("on_screen_on");
+    super.cancelBroadcastStream("on_screen_off");
+    super.cancelBroadcastStream("on_screen_locked");
+    super.cancelBroadcastStream("on_screen_unlocked");
   }
 }
 
@@ -51,10 +58,11 @@ class ScreenSensorConfig extends AwareSensorConfig{
 
 /// Make an AwareWidget
 class ScreenCard extends StatefulWidget {
-  ScreenCard({Key key, @required this.sensor, this.cardId = "screen_card_id"}) : super(key: key);
+  ScreenCard({Key key, @required this.sensor}) : super(key: key);
 
-  ScreenSensor sensor;
-  String cardId;
+  final ScreenSensor sensor;
+
+  String data = "Unknown";
 
   @override
   ScreenCardState createState() => new ScreenCardState();
@@ -63,34 +71,33 @@ class ScreenCard extends StatefulWidget {
 
 class ScreenCardState extends State<ScreenCard> {
 
-  String data = "Unknown";
   @override
   void initState() {
 
     super.initState();
     // set observer
-    widget.sensor.onScreenOn(widget.cardId+"_on").listen((event) {
+    widget.sensor.onScreenOn.listen((event) {
       setState((){
-        data = "On";
+        widget.data = "On";
       });
     });
 
-    widget.sensor.onScreenOff(widget.cardId+"_off").listen((event) {
+    widget.sensor.onScreenOff.listen((event) {
       setState((){
-        data = "Off";
+        widget.data = "Off";
       });
     });
 
-    widget.sensor.onScreenLocked(widget.cardId+"_lock").listen((event) {
+    widget.sensor.onScreenLocked.listen((event) {
       setState((){
-        data = "Locked";
+        widget.data = "Locked";
         print("lock");
       });
     });
 
-    widget.sensor.onScreenUnlocked(widget.cardId+"_unlock").listen((event) {
+    widget.sensor.onScreenUnlocked.listen((event) {
       setState((){
-        data = "Unlocked";
+        widget.data = "Unlocked";
         print("unlock");
       });
     });
@@ -104,7 +111,7 @@ class ScreenCardState extends State<ScreenCard> {
     return new AwareCard(
       contentWidget: SizedBox(
           width: MediaQuery.of(context).size.width*0.8,
-          child: new Text("Screen: $data"),
+          child: new Text("Screen: ${widget.data}"),
         ),
       title: "Screen",
       sensor: widget.sensor
@@ -113,10 +120,7 @@ class ScreenCardState extends State<ScreenCard> {
 
   @override
   void dispose() {
-    widget.sensor.cancelBroadcastStream(widget.cardId+"_on");
-    widget.sensor.cancelBroadcastStream(widget.cardId+"_off");
-    widget.sensor.cancelBroadcastStream(widget.cardId+"_lock");
-    widget.sensor.cancelBroadcastStream(widget.cardId+"_unlock");
+    widget.sensor.cancelAllEventChannels();
     super.dispose();
   }
 

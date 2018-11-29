@@ -1,6 +1,5 @@
 import Flutter
 import UIKit
-import SwiftyJSON
 import com_awareframework_ios_sensor_screen
 import com_awareframework_ios_sensor_core
 import awareframework_core
@@ -11,8 +10,7 @@ public class SwiftAwareframeworkScreenPlugin: AwareFlutterPluginCore, FlutterPlu
     public func initializeSensor(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> AwareSensor? {
         if self.sensor == nil {
             if let config = call.arguments as? Dictionary<String,Any>{
-                let json = JSON.init(config)
-                self.screenSensor = ScreenSensor.init(ScreenSensor.Config(json))
+                self.screenSensor = ScreenSensor.init(ScreenSensor.Config(config))
             }else{
                 self.screenSensor = ScreenSensor.init(ScreenSensor.Config())
             }
