@@ -1,6 +1,8 @@
 # Aware Screen
 
-TODO
+[![Build Status](https://travis-ci.org/awareframework/awareframework_screen.svg?branch=master)](https://travis-ci.org/awareframework/awareframework_screen)
+
+The screen sensor monitors the screen statuses, such as turning on and off, locked and unlocked.
 
 ## Install the plugin into project
 1. Edit `pubspec.yaml`
@@ -19,10 +21,11 @@ import 'package:awareframework_core/awareframework_core.dart';
 ### screen Sensor
 - `start()`
 - `stop()` 
-- `sync(force: Boolean)`
+- `sync(bool force)`
 - `enable()`
 - `disable()`
 - `isEnable()`
+- `setLabel(String label)`
 
 ### Configuration Keys
 TODO
@@ -50,14 +53,14 @@ var config = ScreenSensorConfig()
   ..label = "label";
 
 // init sensor
-var sensor = new ScreenSensor(config);
+var sensor = new ScreenSensor.init(config);
 
-void mathod(){
+void method(){
     /// start 
     sensor.start();
     
     /// set observer
-    sensor.onDataChanged.listen((Map<String,dynamic> result){
+    sensor.onDataChanged.listen((ScreenData result){
       setState((){
         // Your code here
       });

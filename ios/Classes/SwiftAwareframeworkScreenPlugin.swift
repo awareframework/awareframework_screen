@@ -5,8 +5,7 @@ import com_awareframework_ios_sensor_core
 import awareframework_core
 
 public class SwiftAwareframeworkScreenPlugin: AwareFlutterPluginCore, FlutterPlugin, AwareFlutterPluginSensorInitializationHandler, ScreenObserver{
-
-
+    
     public func initializeSensor(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> AwareSensor? {
         if self.sensor == nil {
             if let config = call.arguments as? Dictionary<String,Any>{
@@ -71,4 +70,9 @@ public class SwiftAwareframeworkScreenPlugin: AwareFlutterPluginCore, FlutterPlu
             }
         }
     }
+    
+    public func onScreenBrightnessChanged(data: ScreenBrightnessData) {
+        
+    }
+
 }
