@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'awareframework_screen'
-  s.version = '0.0.5'
+  s.version = '0.7.0'
   s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
 A new flutter plugin project.
@@ -16,8 +16,10 @@ A new flutter plugin project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'awareframework_core'
-  s.dependency 'com.awareframework.ios.sensor.screen','~>0.4.0'
+  s.dependency 'com.awareframework.ios.sensor.screen'
 
-  s.ios.deployment_target = '10.0'
+  s.platform = :ios, '13.0'
+  s.ios.deployment_target = '13.0'
+  s.swift_version = '5'
 end
 

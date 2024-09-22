@@ -10,34 +10,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  ScreenSensor sensor;
-  ScreenSensorConfig config;
+  ScreenSensor? sensor;
+  ScreenSensorConfig? config;
 
   @override
   void initState() {
     super.initState();
 
-    config = ScreenSensorConfig()
-      ..debug = true;
+    config = ScreenSensorConfig()..debug = true;
 
-    sensor = new ScreenSensor.init(config);
+    sensor = new ScreenSensor.init(config!);
 
-    sensor.start();
-
+    sensor?.start();
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return new MaterialApp(
       home: new Scaffold(
           appBar: new AppBar(
             title: const Text('Plugin Example App'),
           ),
-          body: new ScreenCard(sensor: sensor,)
-      ),
+          body: Card()),
     );
   }
 }

@@ -1,16 +1,16 @@
 name: awareframework_screen
-description: A new flutter plugin project.
-version: 0.0.5
-author: AWARE Mobile Context Instrumentation Middleware Framework
+description: A screen sensor library for Flutter.
+version: 0.7.0
 homepage: http://www.awareframework.com
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.12.0 <4.0.0"
+  flutter: ">=1.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  awareframework_core: ^0.1.1
+  awareframework_core: ^0.7.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -23,8 +23,13 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   plugin:
-    androidPackage: com.awareframework.screen.awareframeworkscreen
-    pluginClass: AwareframeworkScreenPlugin
+    platforms:
+      android:
+        package: com.awareframework.screen.awareframeworkscreen
+        pluginClass: AwareframeworkScreenPlugin
+      ios:
+        pluginClass: AwareframeworkScreenPlugin
+        
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
